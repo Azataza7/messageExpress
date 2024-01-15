@@ -7,12 +7,12 @@ import {message} from '../types';
 const messagesRouter = Router();
 const messagesDirectory = './messages';
 
-const messages: message[] = [];
-
 messagesRouter.get('/', async (req, res) => {
-  const files = await fs.readdir(messagesDirectory);
+  const files = (await fs.readdir(messagesDirectory)).slice(-5);
 
   try {
+    const messages: message[] = [];
+
     const messagesPromises = files.map(async (file) => {
       const messageText = await fs.readFile(path.join(messagesDirectory, file), 'utf-8');
       return {message: messageText, datetime: file};
